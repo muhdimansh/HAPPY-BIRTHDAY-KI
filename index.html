@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#241a28">
+<title>For You — The Three Quiet Things</title>
+<style>
+:root{--bg:#17131b;--panel:#251e2a;--panel2:#302432;--rose:#e8a6b6;--cream:#fff3e8;--muted:#c6b6c4;--gold:#e7c98a;--good:#a9d6b2;--bad:#f2a3a3}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#3a2638 0%,#17131b 58%);color:var(--cream);font:16px/1.55 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
+.wrap{width:min(760px,100%);margin:auto;padding:22px 16px 54px}.top{text-align:center;padding:18px 6px 24px}.eyebrow{text-transform:uppercase;letter-spacing:.22em;color:var(--rose);font-size:.72rem;font-weight:700}.heart{font-size:1.6rem;color:var(--rose);margin:8px}.top h1{font-family:Georgia,serif;font-size:clamp(2rem,8vw,3.4rem);line-height:1.05;font-weight:500;margin:8px 0 12px}.top p{color:var(--muted);max-width:540px;margin:0 auto}.progress{height:5px;background:#493747;border-radius:99px;overflow:hidden;margin:0 0 20px}.bar{height:100%;background:linear-gradient(90deg,var(--rose),var(--gold));width:0%;transition:width .35s}
+.stats{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:.86rem;margin-bottom:12px}.card{background:linear-gradient(145deg,rgba(48,36,50,.96),rgba(35,28,39,.98));border:1px solid #604252;border-radius:22px;padding:clamp(18px,5vw,30px);box-shadow:0 18px 55px #0003}.chapter{color:var(--rose);text-transform:uppercase;letter-spacing:.15em;font-size:.75rem;font-weight:750}.card h2{font-family:Georgia,serif;font-size:clamp(1.6rem,6vw,2.2rem);font-weight:500;margin:7px 0 14px}.card p{color:#f1e4e8}.cipher{padding:16px 12px;text-align:center;border-radius:14px;background:#19151d;border:1px dashed #765267;color:var(--gold);font:700 clamp(1.1rem,4vw,1.6rem) ui-monospace,monospace;letter-spacing:.13em;overflow-wrap:anywhere;margin:18px 0}.note{font-size:.9rem;color:var(--muted)!important}.inputrow{display:flex;gap:9px;margin-top:16px}.inputrow input{min-width:0;flex:1}.input, input, textarea{width:100%;border:1px solid #765267;background:#17131b;color:var(--cream);border-radius:12px;padding:13px 14px;font:inherit;outline:none}.input:focus,input:focus{border-color:var(--rose);box-shadow:0 0 0 3px #e8a6b622}button{border:0;border-radius:12px;padding:12px 16px;font:700 .95rem system-ui;cursor:pointer;transition:transform .12s,opacity .12s}button:active{transform:scale(.98)}.primary{background:var(--rose);color:#281923}.secondary{background:#463344;color:var(--cream);border:1px solid #765267}.ghost{background:transparent;color:var(--rose);border:1px solid #765267}.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:15px}.feedback{min-height:25px;margin-top:10px;font-size:.92rem}.feedback.good{color:var(--good)}.feedback.bad{color:var(--bad)}.hintbox{margin-top:14px;padding:13px;border-left:3px solid var(--gold);background:#17131b;border-radius:0 10px 10px 0;color:var(--gold);font-size:.92rem}.hidden{display:none!important}.riddle{padding:14px 15px;background:#1c1720;border-radius:12px;border:1px solid #493747;margin:13px 0}.riddle strong{color:var(--gold)}.small{font-size:.8rem;color:var(--muted)}.final{text-align:center}.final .bigheart{font-size:3rem;color:var(--rose)}.gift{padding:15px;text-align:left;background:#1c1720;border:1px solid #604252;border-radius:14px;margin:10px 0}.gift h3{margin:0 0 5px;color:var(--rose);font-family:Georgia,serif;font-size:1.3rem}.footer{text-align:center;color:#8e7d8d;font-size:.78rem;margin-top:18px}.seal{display:inline-block;border:1px solid #765267;color:var(--gold);padding:4px 10px;border-radius:999px;font-size:.75rem;letter-spacing:.1em}
+@media(max-width:480px){.wrap{padding:12px 12px 36px}.inputrow{flex-direction:column}.inputrow button{width:100%}.stats{font-size:.78rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+<div class="eyebrow">A little mystery, made for you</div><div class="heart">♡</div>
+<h1>The Three Quiet Things</h1>
+<p>Some gifts are more than objects. Follow the clues, be patient with the puzzle, and discover what was chosen for you.</p>
+</header>
+<div class="stats"><span id="stageLabel">Chapter 1 of 4</span><span>Score: <strong id="score">100</strong> points</span></div>
+<div class="progress"><div class="bar" id="bar"></div></div>
+<main id="game" class="card" aria-live="polite"></main>
+<div class="footer">Made with affection · No timer, no rush ♡</div>
+</div>
+<script>
+const chapters = [
+{
+label:"The first signal", title:"A message from the past",
+body:`A note was found folded into a letter. The sender shifted every letter <strong>three places forward</strong> in the alphabet. To read it, move each letter three places backward. The alphabet wraps around: A becomes X.`,
+cipher:"OLVWHQ",
+question:"What word does the signal reveal?",
+answer:["LISTEN"],
+hint:"O moves back to L. V moves back to S. Continue the same shift for every letter.",
+success:"The first key is LISTEN. Keep it safe; it will matter at the end."
+},
+{
+label:"The second signal", title:"The numbers remember",
+body:`The next clue was locked as numbers. Use <strong>A = 1, B = 2, … Z = 26</strong>. Decode the sequence, then enter the word.`,
+cipher:"19 · 20 · 5 · 16",
+question:"What four-letter word is hidden here?",
+answer:["STEP"],
+hint:"19 = S, 20 = T, 5 = E, 16 = P. Read the letters in order.",
+success:"The second key is STEP. You are closer than you think."
+},
+{
+label:"The third signal", title:"The quiet pattern",
+body:`One final word is hidden in the sequence below. Convert each number using A = 1 through Z = 26. Then consider what this word might mean beyond its literal definition.`,
+cipher:"19 · 20 · 9 · 12 · 12",
+question:"Which five-letter word completes the pattern?",
+answer:["STILL","CALM","PEACE"],
+hint:"The first two letters are S and T. The full word describes a quiet moment, not a sound.",
+success:"Your third key is STILL. Three clues, three ideas. Now connect them."
+},
+{
+label:"The final deduction", title:"What do the clues have in common?",
+body:`You have three keys: <strong>LISTEN</strong>, <strong>STEP</strong>, and <strong>STILL</strong>. Each points to something different. Solve the final three riddles to open the last envelope.`,
+riddles:[
+["I let sound become personal. I have no voice of my own, but I bring music and words close to you. What am I?","EARPHONES, EARPHONE, HEADPHONES"],
+["I travel with you but never choose the destination. I meet the ground at every step. What am I?","SHOES, SNEAKERS, NEW BALANCE, NEWBALANCE"],
+["I am made of pages, but my best gift may be a feeling. My title asks you to find calm. What am I?","TENANG, BOOK TENANG, THE BOOK TENANG"]
+],
+hint:"Think of one object for listening, one for walking, and one for finding calm. The book's title is in Malay.",
+success:"All three objects identified. The final envelope is yours."
+}
+];
+let current=0, score=100, usedHints=new Set(), solved=new Set(), answers=[[],[],[],[]];
+const game=document.getElementById("game");
+function updateStats(){document.getElementById("stageLabel").textContent=current<4?`Chapter ${current+1} of 4`:"Mystery complete";document.getElementById("score").textContent=score;document.getElementById("bar").style.width=(current/4*100)+"%";}
+function normalize(s){return s.toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^A-Z0-9]/g,"");}
+function showChapter(){
+ updateStats();
+ if(current>=4){showFinal();return;}
+ const c=chapters[current];
+ let html=`<div class="chapter">${c.label}</div><h2>${c.title}</h2><p>${c.body}</p>`;
+ if(c.cipher)html+=`<div class="cipher">${c.cipher}</div>`;
+ if(c.riddles){
+   c.riddles.forEach((r,i)=>{html+=`<div class="riddle"><strong>Riddle ${i+1}</strong><p>${r[0]}</p><input aria-label="Answer to riddle ${i+1}" id="r${i}" placeholder="Your answer…" autocomplete="off"></div>`});
+   html+=`<div class="actions"><button class="primary" onclick="checkFinal()">Unlock the envelope</button><button class="secondary" onclick="showHint()">Reveal a hint (−10)</button></div>`;
+ }else{
+   html+=`<label for="answer"><strong>${c.question}</strong></label><div class="inputrow"><input id="answer" placeholder="Type your answer…" autocomplete="off" autocapitalize="characters"><button class="primary" onclick="checkAnswer()">Submit</button></div><div class="actions"><button class="secondary" onclick="showHint()">Reveal a hint (−10)</button></div>`;
+ }
+ html+=`<div id="feedback" class="feedback" role="status"></div><div id="hint" class="hintbox hidden"></div>`;
+ game.innerHTML=html;
+ const inp=document.getElementById("answer");if(inp)inp.addEventListener("keydown",e=>{if(e.key==="Enter")checkAnswer()});
+}
+function showHint(){
+ const c=chapters[current];if(!usedHints.has(current)){score=Math.max(0,score-10);usedHints.add(current);updateStats();}
+ const h=document.getElementById("hint");h.textContent=c.hint;h.classList.remove("hidden");document.getElementById("score").textContent=score;
+}
+function checkAnswer(){
+ const c=chapters[current], value=normalize(document.getElementById("answer").value);
+ const f=document.getElementById("feedback");
+ if(c.answer.some(a=>normalize(a)===value)){f.textContent=c.success;f.className="feedback good";solved.add(current);setTimeout(()=>{current++;showChapter()},1100);}
+ else{f.textContent="Not quite. Recheck the pattern and try again.";f.className="feedback bad";}
+}
+function checkFinal(){
+ const c=chapters[current], vals=c.riddles.map((_,i)=>normalize(document.getElementById("r"+i).value));
+ const ok=c.riddles.every((r,i)=>r[1].split(",").some(a=>normalize(a)===vals[i]));
+ const f=document.getElementById("feedback");
+ if(ok){f.textContent=c.success;f.className="feedback good";solved.add(current);setTimeout(()=>{current++;showChapter()},1100);}
+ else{f.textContent="At least one answer needs another look. You can solve them in any order.";f.className="feedback bad";}
+}
+function showFinal(){
+ updateStats();document.getElementById("bar").style.width="100%";
+ game.innerHTML=`<div class="final"><div class="bigheart">♡</div><div class="chapter">Mystery solved</div><h2>Three gifts, one little wish</h2><p>You found all three objects. Each one carries a different thought: something to listen to, something to take you forward, and something to bring a little calm.</p>
+<div class="gift"><h3>01 · Earphones</h3><p>For the songs, stories, and little moments you want to keep close.</p></div>
+<div class="gift"><h3>02 · New Balance shoes</h3><p>For every step ahead, every new place, and the journeys still waiting for you.</p></div>
+<div class="gift"><h3>03 · <em>Tenang</em></h3><p>For a softer pause when the world gets loud. I hope you always find a little peace.</p></div>
+<p style="font-family:Georgia,serif;font-size:1.2rem;color:var(--rose)">Happy birthday. You deserve thoughtful things, and moments that make you feel cared for. ♡</p>
+<span class="seal">FINAL SCORE: ${score}/100</span><div class="actions" style="justify-content:center"><button class="secondary" onclick="location.reload()">Play again</button></div></div>`;
+}
+showChapter();
+</script>
+</body></html>
